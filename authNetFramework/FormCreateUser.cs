@@ -22,7 +22,7 @@ namespace authNetFramework
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxName.Text))
+            if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxPasswordMinLength.Text) && !string.IsNullOrEmpty(textBoxPasswordValidityPeriod.Text))
             {
                 var xDoc = XDocument.Load(Options.FilePath);
 
@@ -31,13 +31,17 @@ namespace authNetFramework
                     xDoc.Element("users")
                         .Add(new XElement("user",
                         new XElement("name", textBoxName.Text),
-                        new XElement("password", "")));
+                        new XElement("password", ""),
+                        new XElement("passwordminlength", textBoxPasswordMinLength.Text),
+                        new XElement("passwordvalidityperiod", textBoxPasswordValidityPeriod.Text)));
 
                     xDoc.Save(Options.FilePath);
 
                     MessageBox.Show("Создание пользователя прошло успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     textBoxName.Text = string.Empty;
+                    textBoxPasswordMinLength.Text = string.Empty;
+                    textBoxPasswordValidityPeriod.Text = string.Empty;
                 }
                 else
                 {
@@ -53,6 +57,22 @@ namespace authNetFramework
         private void buttonClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void textBoxPasswordMinLength_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(!char.IsDigit(e.KeyChar) && e.KeyChar != Convert.ToChar(8))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBoxPasswordValidityPeriod_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != Convert.ToChar(8))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

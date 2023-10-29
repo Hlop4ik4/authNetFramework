@@ -31,7 +31,9 @@ namespace authNetFramework
 
                 users.Add(new XElement("user",
                     new XElement("name", "ADMIN"),
-                    new XElement("password", "")));
+                    new XElement("password", ""),
+                    new XElement("passwordminlength", 0),
+                    new XElement("passwordvalidityperiod", 0)));
 
                 var xDocument = new XDocument(users);
                 xDocument.Save(Options.FilePath);

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using authNetFramework.User;
+using authNetFramework.StaticClasses;
 
 namespace authNetFramework
 {
@@ -21,15 +21,28 @@ namespace authNetFramework
             var authForm = new FormAuth();
             authForm.ShowDialog();
 
-            if (CurrentUser.isAdmin)
+            if (CurrentUser.IsAdmin)
             {
                 createUserToolStripMenuItem.Visible = true;
+                usersToolStripMenuItem.Visible = true;
             }
         }
 
         private void createUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new FormCreateUser();
+            form.ShowDialog();
+        }
+
+        private void chanhePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormChangePassword();
+            form.ShowDialog();
+        }
+
+        private void usersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormUsers();
             form.ShowDialog();
         }
     }

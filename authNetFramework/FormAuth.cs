@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using authNetFramework.User;
+using authNetFramework.StaticClasses;
 using authNetFramework.Constant;
 using authNetFramework.Hash;
 
@@ -43,7 +43,8 @@ namespace authNetFramework
                             textBoxPassword.Visible = true;
                             labelPassword.Visible = true;
                             CurrentUser.Name = user.Element("name").Value;
-                            CurrentUser.isAdmin = CurrentUser.Name == "ADMIN" ? true : false;
+                            CurrentUser.PasswordMinLength = Convert.ToInt32(user.XPathSelectElement("passwordminlength").Value);
+                            CurrentUser.IsAdmin = CurrentUser.Name == "ADMIN";
                             if (string.IsNullOrEmpty(user.Element("password").Value))
                             {
                                 textBoxPassword2.Visible = true;
@@ -75,18 +76,24 @@ namespace authNetFramework
                     {
                         if(textBoxPassword.Text == textBoxPassword2.Text)
                         {
-                            xDoc.XPathSelectElements("//user")
-                                .FirstOrDefault(x => x.Element("name").Value == CurrentUser.Name)
-                                .Element("password").Value = Hash.Hash.CreateSHA256(textBoxPassword.Text);
+                            if (textBoxPassword.Text.Length >= CurrentUser.PasswordMinLength)
+                            {
+                                xDoc.XPathSelectElements("//user")
+                                        .FirstOrDefault(x => x.Element("name").Value == CurrentUser.Name)
+                                        .Element("password").Value = Hash.Hash.CreateSHA256(textBoxPassword.Text);
 
-                            xDoc.Save(Options.FilePath);
+                                xDoc.Save(Options.FilePath);
 
-                            CurrentUser.Password = textBoxPassword.Text;
-                            CurrentUser.isAuthorized = true;
+                                CurrentUser.IsAuthorized = true;
 
-                            MessageBox.Show("Пароль успешно создан", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Пароль успешно создан", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            this.Close();
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Длина пароля должна быть больше {CurrentUser.PasswordMinLength}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
@@ -104,7 +111,7 @@ namespace authNetFramework
                     {
                         if(Hash.Hash.CreateSHA256(textBoxPassword.Text) == userPasswordXDoc)
                         {
-                            CurrentUser.isAuthorized = true;
+                            CurrentUser.IsAuthorized = true;
                             MessageBox.Show("Авторизация прошла успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
@@ -117,7 +124,7 @@ namespace authNetFramework
                         MessageBox.Show("Заполните все поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                if(CurrentUser.isAuthorized)
+                if(CurrentUser.IsAuthorized)
                 {
                     this.Close();
                 }
