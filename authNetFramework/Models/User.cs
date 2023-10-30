@@ -11,5 +11,35 @@ namespace authNetFramework.Models
     {
         [DisplayName("Логин")]
         public string Name { get; set; }
+
+        private string passwordIsRestricted;
+
+        [DisplayName("Ограничение на пароль")]
+        public string PasswordIsRestricted
+        {
+            get
+            {
+                return passwordIsRestricted == "true" ? "Да" : "Нет";
+            }
+            set 
+            { 
+                passwordIsRestricted = value; 
+            }
+        }
+
+        private string isBlocked;
+
+        [DisplayName("Заблокирован")]
+        public string IsBlocked
+        {
+            get
+            {
+                return isBlocked == "true" ? "Да" : "Нет";
+            }
+            set
+            {
+                isBlocked = value;
+            }
+        }
     }
 }

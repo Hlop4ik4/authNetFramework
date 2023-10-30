@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.buttonBlock = new System.Windows.Forms.Button();
+            this.buttonSetPasswordRestriction = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,14 +44,37 @@
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 24;
-            this.dataGridView.Size = new System.Drawing.Size(622, 453);
+            this.dataGridView.Size = new System.Drawing.Size(638, 453);
             this.dataGridView.TabIndex = 0;
+            this.dataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_RowEnter);
+            // 
+            // buttonBlock
+            // 
+            this.buttonBlock.Location = new System.Drawing.Point(643, 12);
+            this.buttonBlock.Name = "buttonBlock";
+            this.buttonBlock.Size = new System.Drawing.Size(145, 85);
+            this.buttonBlock.TabIndex = 1;
+            this.buttonBlock.Text = "Заблокировать";
+            this.buttonBlock.UseVisualStyleBackColor = true;
+            this.buttonBlock.Click += new System.EventHandler(this.buttonBlock_Click);
+            // 
+            // buttonSetPasswordRestriction
+            // 
+            this.buttonSetPasswordRestriction.Location = new System.Drawing.Point(643, 103);
+            this.buttonSetPasswordRestriction.Name = "buttonSetPasswordRestriction";
+            this.buttonSetPasswordRestriction.Size = new System.Drawing.Size(145, 85);
+            this.buttonSetPasswordRestriction.TabIndex = 1;
+            this.buttonSetPasswordRestriction.Text = "Установить ограничение на пароль";
+            this.buttonSetPasswordRestriction.UseVisualStyleBackColor = true;
+            this.buttonSetPasswordRestriction.Click += new System.EventHandler(this.buttonSetPasswordRestriction_Click);
             // 
             // FormUsers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonSetPasswordRestriction);
+            this.Controls.Add(this.buttonBlock);
             this.Controls.Add(this.dataGridView);
             this.Name = "FormUsers";
             this.Text = "Пользователи";
@@ -62,5 +87,7 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.Button buttonBlock;
+        private System.Windows.Forms.Button buttonSetPasswordRestriction;
     }
 }

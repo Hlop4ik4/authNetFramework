@@ -14,6 +14,7 @@ using System.Xml.XPath;
 using authNetFramework.StaticClasses;
 using authNetFramework.Constant;
 using authNetFramework.Hash;
+using System.Text.RegularExpressions;
 
 namespace authNetFramework
 {
@@ -37,20 +38,29 @@ namespace authNetFramework
                     {
                         if (user.Element("name").Value == textBoxLogin.Text)
                         {
-                            loginExist = true;
-                            textBoxLogin.Visible = false;
-                            labelLogin.Visible = false;
-                            textBoxPassword.Visible = true;
-                            labelPassword.Visible = true;
-                            CurrentUser.Name = user.Element("name").Value;
-                            CurrentUser.PasswordMinLength = Convert.ToInt32(user.XPathSelectElement("passwordminlength").Value);
-                            CurrentUser.IsAdmin = CurrentUser.Name == "ADMIN";
-                            if (string.IsNullOrEmpty(user.Element("password").Value))
+                            if(user.Element("isblocked").Value != "true")
                             {
-                                textBoxPassword2.Visible = true;
-                                labelPassword2.Visible = true;
+                                loginExist = true;
+                                textBoxLogin.Visible = false;
+                                labelLogin.Visible = false;
+                                textBoxPassword.Visible = true;
+                                labelPassword.Visible = true;
+                                CurrentUser.Name = user.Element("name").Value;
+                                CurrentUser.PasswordMinLength = Convert.ToInt32(user.XPathSelectElement("passwordminlength").Value);
+                                CurrentUser.PasswordIsRestricted = user.Element("passwordisrestricted").Value == "true";
+                                CurrentUser.IsAdmin = CurrentUser.Name == "ADMIN";
+                                if (string.IsNullOrEmpty(user.Element("password").Value))
+                                {
+                                    textBoxPassword2.Visible = true;
+                                    labelPassword2.Visible = true;
+                                }
+                                break;
                             }
-                            break;
+                            else
+                            {
+                                MessageBox.Show("Пользователь с данным логином заблокирован", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
                         }
                     }
 
@@ -78,17 +88,24 @@ namespace authNetFramework
                         {
                             if (textBoxPassword.Text.Length >= CurrentUser.PasswordMinLength)
                             {
-                                xDoc.XPathSelectElements("//user")
+                                if(CurrentUser.PasswordIsRestricted && !Regex.IsMatch(textBoxPassword.Text, @"^((?=\S*?[A-ZА-Я])(?=\S*?[a-zа-я]).{0,})\S$"))
+                                {
+                                    MessageBox.Show("Пароль должен содержать строчные и прописные буквы", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                else
+                                {
+                                    xDoc.XPathSelectElements("//user")
                                         .FirstOrDefault(x => x.Element("name").Value == CurrentUser.Name)
                                         .Element("password").Value = Hash.Hash.CreateSHA256(textBoxPassword.Text);
 
-                                xDoc.Save(Options.FilePath);
+                                    xDoc.Save(Options.FilePath);
 
-                                CurrentUser.IsAuthorized = true;
+                                    CurrentUser.IsAuthorized = true;
 
-                                MessageBox.Show("Пароль успешно создан", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show("Пароль успешно создан", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                this.Close();
+                                    this.Close();
+                                }
                             }
                             else
                             {

@@ -33,7 +33,9 @@ namespace authNetFramework
                     new XElement("name", "ADMIN"),
                     new XElement("password", ""),
                     new XElement("passwordminlength", 0),
-                    new XElement("passwordvalidityperiod", 0)));
+                    new XElement("passwordvalidityperiod", 0),
+                    new XElement("passwordisrestricted", "false"),
+                    new XElement("isblocked", "false")));
 
                 var xDocument = new XDocument(users);
                 xDocument.Save(Options.FilePath);

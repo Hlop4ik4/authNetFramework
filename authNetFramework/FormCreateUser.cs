@@ -33,7 +33,9 @@ namespace authNetFramework
                         new XElement("name", textBoxName.Text),
                         new XElement("password", ""),
                         new XElement("passwordminlength", textBoxPasswordMinLength.Text),
-                        new XElement("passwordvalidityperiod", textBoxPasswordValidityPeriod.Text)));
+                        new XElement("passwordvalidityperiod", textBoxPasswordValidityPeriod.Text),
+                        new XElement("passwordisrestricted", checkBox.Checked),
+                        new XElement("isblocked", "false")));
 
                     xDoc.Save(Options.FilePath);
 
