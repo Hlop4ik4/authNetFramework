@@ -41,5 +41,35 @@ namespace authNetFramework.Models
                 isBlocked = value;
             }
         }
+
+        private string passwordValidityPeriod;
+
+        [DisplayName("Срок действия пароля")]
+        public string PasswordValidityPeriod
+        {
+            get
+            {
+                return passwordValidityPeriod == "0" ? "Нет" : passwordValidityPeriod;
+            }
+            set 
+            {
+                passwordValidityPeriod = value;
+            }
+        }
+
+        private string passwordMinLength;
+
+        [DisplayName("Минимальная длина пароля")]
+        public string PasswordMinLength
+        {
+            get
+            {
+                return passwordMinLength == "0" ? "Нет" : passwordMinLength;
+            }
+            set
+            {
+                passwordMinLength = value;
+            }
+        }
     }
 }

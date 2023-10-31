@@ -35,6 +35,7 @@
             this.textBoxPassword2 = new System.Windows.Forms.TextBox();
             this.labelPassword2 = new System.Windows.Forms.Label();
             this.buttonLogin = new System.Windows.Forms.Button();
+            this.buttonClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxLogin
@@ -101,11 +102,22 @@
             this.buttonLogin.UseVisualStyleBackColor = true;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
+            // buttonClose
+            // 
+            this.buttonClose.Location = new System.Drawing.Point(208, 90);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.TabIndex = 3;
+            this.buttonClose.Text = "Закрыть";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
             // FormAuth
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(376, 126);
+            this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.labelPassword2);
             this.Controls.Add(this.labelLogin);
@@ -129,5 +141,6 @@
         private System.Windows.Forms.TextBox textBoxPassword2;
         private System.Windows.Forms.Label labelPassword2;
         private System.Windows.Forms.Button buttonLogin;
+        private System.Windows.Forms.Button buttonClose;
     }
 }

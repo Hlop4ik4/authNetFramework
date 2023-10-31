@@ -31,6 +31,7 @@
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonBlock = new System.Windows.Forms.Button();
             this.buttonSetPasswordRestriction = new System.Windows.Forms.Button();
+            this.buttonClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,13 +45,13 @@
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 24;
-            this.dataGridView.Size = new System.Drawing.Size(638, 453);
+            this.dataGridView.Size = new System.Drawing.Size(1030, 453);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_RowEnter);
             // 
             // buttonBlock
             // 
-            this.buttonBlock.Location = new System.Drawing.Point(643, 12);
+            this.buttonBlock.Location = new System.Drawing.Point(1056, 12);
             this.buttonBlock.Name = "buttonBlock";
             this.buttonBlock.Size = new System.Drawing.Size(145, 85);
             this.buttonBlock.TabIndex = 1;
@@ -60,7 +61,7 @@
             // 
             // buttonSetPasswordRestriction
             // 
-            this.buttonSetPasswordRestriction.Location = new System.Drawing.Point(643, 103);
+            this.buttonSetPasswordRestriction.Location = new System.Drawing.Point(1056, 103);
             this.buttonSetPasswordRestriction.Name = "buttonSetPasswordRestriction";
             this.buttonSetPasswordRestriction.Size = new System.Drawing.Size(145, 85);
             this.buttonSetPasswordRestriction.TabIndex = 1;
@@ -68,11 +69,22 @@
             this.buttonSetPasswordRestriction.UseVisualStyleBackColor = true;
             this.buttonSetPasswordRestriction.Click += new System.EventHandler(this.buttonSetPasswordRestriction_Click);
             // 
+            // buttonClose
+            // 
+            this.buttonClose.Location = new System.Drawing.Point(1056, 353);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(145, 85);
+            this.buttonClose.TabIndex = 1;
+            this.buttonClose.Text = "Закрыть";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
             // FormUsers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1229, 450);
+            this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonSetPasswordRestriction);
             this.Controls.Add(this.buttonBlock);
             this.Controls.Add(this.dataGridView);
@@ -89,5 +101,6 @@
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Button buttonBlock;
         private System.Windows.Forms.Button buttonSetPasswordRestriction;
+        private System.Windows.Forms.Button buttonClose;
     }
 }

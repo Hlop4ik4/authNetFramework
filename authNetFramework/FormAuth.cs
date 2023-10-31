@@ -21,6 +21,7 @@ namespace authNetFramework
     public partial class FormAuth : Form
     {
         private XDocument xDoc = XDocument.Load(Options.FilePath);
+        private int wrongPasswordCount = 0;
 
         public FormAuth()
         {
@@ -133,7 +134,15 @@ namespace authNetFramework
                         }
                         else
                         {
+                            wrongPasswordCount += 1;
+                            textBoxPassword.Text = string.Empty;
                             MessageBox.Show("Пароль введен неверно", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            if(wrongPasswordCount == 3)
+                            {
+                                MessageBox.Show("Превышено количество попыток ввода пароля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                
+                                Application.Exit();
+                            }
                         }
                     }
                     else
@@ -146,6 +155,11 @@ namespace authNetFramework
                     this.Close();
                 }
             }
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

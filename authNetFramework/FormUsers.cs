@@ -39,7 +39,9 @@ namespace authNetFramework
                     {
                         Name = elem.Element("name").Value,
                         PasswordIsRestricted = elem.Element("passwordisrestricted").Value,
-                        IsBlocked = elem.Element("isblocked").Value
+                        IsBlocked = elem.Element("isblocked").Value,
+                        PasswordValidityPeriod = elem.Element("passwordvalidityperiod").Value,
+                        PasswordMinLength = elem.Element("passwordminlength").Value
                     });
                 }
             }
@@ -114,6 +116,11 @@ namespace authNetFramework
                     LoadData();
                 }
             }
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
