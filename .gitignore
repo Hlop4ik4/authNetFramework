@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /authNetFramework/files/test.xml
+/authNetFramework/files/test.txt

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using authNetFramework.Constant;
+using System.Security.Cryptography;
+using authNetFramework.StaticClasses;
 
 namespace authNetFramework
 {
@@ -38,7 +40,13 @@ namespace authNetFramework
                     new XElement("isblocked", "false")));
 
                 var xDocument = new XDocument(users);
-                xDocument.Save(Options.FilePath);
+                /*xDocument.Save(Options.FilePath);*/
+
+                DESEncryptor.EncryptFile(xDocument);
+            }
+            else
+            {
+                var s = DESEncryptor.DecryptFile();
             }
         }
     }

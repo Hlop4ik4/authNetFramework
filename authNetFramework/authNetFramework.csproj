@@ -88,6 +88,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticClasses\CurrentUser.cs" />
+    <Compile Include="StaticClasses\DESEncryptor.cs" />
     <EmbeddedResource Include="FormAboutProgram.resx">
       <DependentUpon>FormAboutProgram.cs</DependentUpon>
     </EmbeddedResource>
