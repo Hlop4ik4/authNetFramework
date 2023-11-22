@@ -17,7 +17,6 @@ namespace authNetFramework
 {
     public partial class FormChangePassword : Form
     {
-        private XDocument xDoc = XDocument.Load(Options.FilePath);
         public FormChangePassword()
         {
             InitializeComponent();
@@ -32,18 +31,17 @@ namespace authNetFramework
         {
             if(!string.IsNullOrEmpty(textBoxNewPassword.Text) && !string.IsNullOrEmpty(textBoxNewPassword2.Text) && !string.IsNullOrEmpty(textBoxOldPassword.Text))
             {
-                if (Hash.Hash.CreateSHA256(textBoxOldPassword.Text) == xDoc.XPathSelectElements("//user").FirstOrDefault(x => x.Element("name").Value == CurrentUser.Name).Element("password").Value)
+                if (Hash.Hash.CreateSHA256(textBoxOldPassword.Text) == UsersControl.Users.FirstOrDefault(x => x.Name == CurrentUser.Name).Password)
                 {
                     if(textBoxNewPassword.Text == textBoxNewPassword2.Text && textBoxNewPassword.Text.Length >= CurrentUser.PasswordMinLength)
                     {
                         if(MessageBox.Show("Вы уверены что хотите сменить пароль?", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            xDoc.XPathSelectElements("//user")
-                            .FirstOrDefault(x => x.Element("name").Value == CurrentUser.Name)
-                            .Element("password")
-                            .Value = Hash.Hash.CreateSHA256(textBoxNewPassword.Text);
+                            UsersControl.Users
+                            .FirstOrDefault(x => x.Name == CurrentUser.Name)
+                            .Password = Hash.Hash.CreateSHA256(textBoxNewPassword.Text);
 
-                            xDoc.Save(Options.FilePath);
+                            UsersControl.Save();
 
                             MessageBox.Show("Смена пароля прошла успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

@@ -20,7 +20,6 @@ namespace authNetFramework
 {
     public partial class FormAuth : Form
     {
-        private XDocument xDoc = XDocument.Load(Options.FilePath);
         private int wrongPasswordCount = 0;
 
         public FormAuth()
@@ -35,22 +34,22 @@ namespace authNetFramework
                 if (!string.IsNullOrEmpty(textBoxLogin.Text))
                 {
                     bool loginExist = false;
-                    foreach (var user in xDoc.XPathSelectElements("//user"))
+                    foreach (var user in UsersControl.Users)
                     {
-                        if (user.Element("name").Value == textBoxLogin.Text)
+                        if (user.Name == textBoxLogin.Text)
                         {
-                            if(user.Element("isblocked").Value != "true")
+                            if(user.IsBlocked != "true")
                             {
                                 loginExist = true;
                                 textBoxLogin.Visible = false;
                                 labelLogin.Visible = false;
                                 textBoxPassword.Visible = true;
                                 labelPassword.Visible = true;
-                                CurrentUser.Name = user.Element("name").Value;
-                                CurrentUser.PasswordMinLength = Convert.ToInt32(user.XPathSelectElement("passwordminlength").Value);
-                                CurrentUser.PasswordIsRestricted = user.Element("passwordisrestricted").Value == "true";
+                                CurrentUser.Name = user.Name;
+                                CurrentUser.PasswordMinLength = Convert.ToInt32(user.PasswordMinLength);
+                                CurrentUser.PasswordIsRestricted = user.PasswordIsRestricted == "true";
                                 CurrentUser.IsAdmin = CurrentUser.Name == "ADMIN";
-                                if (string.IsNullOrEmpty(user.Element("password").Value))
+                                if (string.IsNullOrEmpty(user.Password))
                                 {
                                     textBoxPassword2.Visible = true;
                                     labelPassword2.Visible = true;
@@ -77,11 +76,9 @@ namespace authNetFramework
             }
             else
             {
-                var userPasswordXDoc = xDoc.XPathSelectElements("//user")
-                                           .FirstOrDefault(x => x.Element("name").Value == CurrentUser.Name)
-                                           .Element("password")
-                                           .Value;
-                if (string.IsNullOrEmpty(userPasswordXDoc))
+                var userPassword = UsersControl.Users.FirstOrDefault(x => x.Name == CurrentUser.Name).Password;
+
+                if (string.IsNullOrEmpty(userPassword))
                 {
                     if(!string.IsNullOrEmpty(textBoxPassword.Text) && !string.IsNullOrEmpty(textBoxPassword2.Text))
                     {
@@ -95,11 +92,11 @@ namespace authNetFramework
                                 }
                                 else
                                 {
-                                    xDoc.XPathSelectElements("//user")
-                                        .FirstOrDefault(x => x.Element("name").Value == CurrentUser.Name)
-                                        .Element("password").Value = Hash.Hash.CreateSHA256(textBoxPassword.Text);
+                                    UsersControl.Users
+                                        .FirstOrDefault(x => x.Name == CurrentUser.Name)
+                                        .Password = Hash.Hash.CreateSHA256(textBoxPassword.Text);
 
-                                    xDoc.Save(Options.FilePath);
+                                    UsersControl.Save();
 
                                     CurrentUser.IsAuthorized = true;
 
@@ -127,7 +124,7 @@ namespace authNetFramework
                 {
                     if (!string.IsNullOrEmpty(textBoxPassword.Text))
                     {
-                        if(Hash.Hash.CreateSHA256(textBoxPassword.Text) == userPasswordXDoc)
+                        if(Hash.Hash.CreateSHA256(textBoxPassword.Text) == userPassword)
                         {
                             CurrentUser.IsAuthorized = true;
                             MessageBox.Show("Авторизация прошла успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);

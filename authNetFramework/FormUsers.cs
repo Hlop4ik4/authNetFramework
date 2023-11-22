@@ -16,7 +16,6 @@ namespace authNetFramework
 {
     public partial class FormUsers : Form
     {
-        private XDocument xDoc;
 
         public FormUsers()
         {
@@ -25,23 +24,19 @@ namespace authNetFramework
 
         private void LoadData()
         {
-            xDoc = XDocument.Load(Options.FilePath);
+            var list = new List<UserViewModel>();
 
-            var xElements = xDoc.Root.Elements("user");
-
-            var list = new List<User>();
-
-            foreach (var elem in xElements)
+            foreach (var elem in UsersControl.Users)
             {
-                if(elem.Element("name").Value != "ADMIN")
+                if(elem.Name != "ADMIN")
                 {
-                    list.Add(new User
+                    list.Add(new UserViewModel
                     {
-                        Name = elem.Element("name").Value,
-                        PasswordIsRestricted = elem.Element("passwordisrestricted").Value,
-                        IsBlocked = elem.Element("isblocked").Value,
-                        PasswordValidityPeriod = elem.Element("passwordvalidityperiod").Value,
-                        PasswordMinLength = elem.Element("passwordminlength").Value
+                        Name = elem.Name,
+                        PasswordIsRestricted = elem.PasswordIsRestricted,
+                        IsBlocked = elem.IsBlocked,
+                        PasswordValidityPeriod = elem.PasswordValidityPeriod,
+                        PasswordMinLength = elem.PasswordMinLength
                     });
                 }
             }
@@ -63,14 +58,14 @@ namespace authNetFramework
             if (dataGridView.SelectedCells.Count == 1)
             {
                 string selectedUserName = Convert.ToString(dataGridView.Rows[dataGridView.SelectedCells[0].RowIndex].Cells[0].Value);
-                var selectedUserIsBlock = xDoc.XPathSelectElement($"//user[name='{selectedUserName}']").Element("isblocked").Value == "true";
+                var selectedUserIsBlock = UsersControl.Users.FirstOrDefault(x => x.Name == selectedUserName).IsBlocked == "true";
                 var blockUnblockString = selectedUserIsBlock ? "разблокировать" : "заблокировать";
 
                 if (MessageBox.Show($"Вы уверены что хотите {blockUnblockString} этого пользователя?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    xDoc.XPathSelectElement($"//user[name='{selectedUserName}']").Element("isblocked").Value = selectedUserIsBlock ? "false" : "true";
+                    UsersControl.Users.FirstOrDefault(x => x.Name == selectedUserName).IsBlocked = selectedUserIsBlock ? "false" : "true";
 
-                    xDoc.Save(Options.FilePath);
+                    UsersControl.Save();
 
                     LoadData();
                 }
@@ -81,7 +76,7 @@ namespace authNetFramework
         {
             string selectedUserName = Convert.ToString(dataGridView.Rows[e.RowIndex].Cells[0].Value);
 
-            if (xDoc.XPathSelectElement($"//user[name='{selectedUserName}']").Element("isblocked").Value == "true")
+            if (UsersControl.Users.FirstOrDefault(x => x.Name == selectedUserName).IsBlocked == "true")
             {
                 buttonBlock.Text = "Разблокировать";
             }
@@ -89,7 +84,7 @@ namespace authNetFramework
             {
                 buttonBlock.Text = "Заблокировать";
             }
-            if (xDoc.XPathSelectElement($"//user[name='{selectedUserName}']").Element("passwordisrestricted").Value == "true")
+            if (UsersControl.Users.FirstOrDefault(x => x.Name == selectedUserName).PasswordIsRestricted == "true")
             {
                 buttonSetPasswordRestriction.Text = "Убрать ограничение на пароль";
             }
@@ -104,14 +99,14 @@ namespace authNetFramework
             if (dataGridView.SelectedCells.Count == 1)
             {
                 string selectedUserName = Convert.ToString(dataGridView.Rows[dataGridView.SelectedCells[0].RowIndex].Cells[0].Value);
-                var selectedUserPasswordIsRestricted = xDoc.XPathSelectElement($"//user[name='{selectedUserName}']").Element("isblocked").Value == "true";
+                var selectedUserPasswordIsRestricted = UsersControl.Users.FirstOrDefault(x => x.Name == selectedUserName).PasswordIsRestricted == "true";
                 var setUnsetString = selectedUserPasswordIsRestricted ? "убрать" : "установить";
 
                 if (MessageBox.Show($"Вы уверены что хотите {setUnsetString} ограничение на пароль для этого пользователя?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    xDoc.XPathSelectElement($"//user[name='{selectedUserName}']").Element("passwordisrestricted").Value = selectedUserPasswordIsRestricted ? "false" : "true";
+                    UsersControl.Users.FirstOrDefault(x => x.Name == selectedUserName).PasswordIsRestricted = selectedUserPasswordIsRestricted ? "false" : "true";
 
-                    xDoc.Save(Options.FilePath);
+                    UsersControl.Save();
 
                     LoadData();
                 }

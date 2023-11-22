@@ -8,6 +8,9 @@ using System.Xml.Linq;
 using authNetFramework.Constant;
 using System.Security.Cryptography;
 using authNetFramework.StaticClasses;
+using System.Xml;
+using System.Text;
+using authNetFramework.Models;
 
 namespace authNetFramework
 {
@@ -29,24 +32,15 @@ namespace authNetFramework
         {
             if (!File.Exists(Options.FilePath))
             {
-                var users = new XElement("users");
+                string initString = "12345678name:ADMIN;password:;passwordminlength:0;passwordvalidityperiod:0;passwordisrestricted:false;isblocked:false;";
 
-                users.Add(new XElement("user",
-                    new XElement("name", "ADMIN"),
-                    new XElement("password", ""),
-                    new XElement("passwordminlength", 0),
-                    new XElement("passwordvalidityperiod", 0),
-                    new XElement("passwordisrestricted", "false"),
-                    new XElement("isblocked", "false")));
+                DESEncryptor.EncryptFile(initString);
 
-                var xDocument = new XDocument(users);
-                /*xDocument.Save(Options.FilePath);*/
-
-                DESEncryptor.EncryptFile(xDocument);
+                UsersControl.Load();
             }
             else
             {
-                var s = DESEncryptor.DecryptFile();
+                UsersControl.Load();
             }
         }
     }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using authNetFramework.Constant;
+using authNetFramework.Models;
 
 namespace authNetFramework
 {
@@ -24,20 +25,19 @@ namespace authNetFramework
         {
             if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxPasswordMinLength.Text) && !string.IsNullOrEmpty(textBoxPasswordValidityPeriod.Text))
             {
-                var xDoc = XDocument.Load(Options.FilePath);
-
-                if(xDoc.XPathSelectElements("//user").FirstOrDefault(x => x.Element("name").Value == textBoxName.Text) == null)
+                if(UsersControl.Users.FirstOrDefault(x => x.Name == textBoxName.Text) == null)
                 {
-                    xDoc.Element("users")
-                        .Add(new XElement("user",
-                        new XElement("name", textBoxName.Text),
-                        new XElement("password", ""),
-                        new XElement("passwordminlength", textBoxPasswordMinLength.Text),
-                        new XElement("passwordvalidityperiod", textBoxPasswordValidityPeriod.Text),
-                        new XElement("passwordisrestricted", checkBox.Checked),
-                        new XElement("isblocked", "false")));
+                    UsersControl.Users.Add(new User
+                    {
+                        Name = textBoxName.Text,
+                        Password = string.Empty,
+                        PasswordMinLength = textBoxPasswordMinLength.Text,
+                        PasswordValidityPeriod = textBoxPasswordValidityPeriod.Text,
+                        PasswordIsRestricted = checkBox.Checked ? "true" : "false",
+                        IsBlocked = "false"
+                    });
 
-                    xDoc.Save(Options.FilePath);
+                    UsersControl.Save();
 
                     MessageBox.Show("Создание пользователя прошло успешно", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

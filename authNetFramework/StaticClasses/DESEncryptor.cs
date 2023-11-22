@@ -13,8 +13,6 @@ namespace authNetFramework.StaticClasses
 {
     public static class DESEncryptor
     {
-        private static Random random = new Random();
-
         private readonly static string passPhrase = "PASSWORD";
 
         private static DES CreateDESProvider()
@@ -69,9 +67,9 @@ namespace authNetFramework.StaticClasses
             }
         }
 
-        public static void EncryptFile(XDocument xDoc)
+        public static void EncryptFile(string dataString)
         {
-            byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(xDoc.Root.Value));
+            byte[] data = Encoding.ASCII.GetBytes(dataString);
             byte[] encryptedData = EncryptDES(data);
 
             using(var fs = new FileStream(Options.FilePath, FileMode.OpenOrCreate))
