@@ -13,5 +13,7 @@ namespace authNetFramework.StaticClasses
         public static bool IsAdmin { get; set; }
         public static int PasswordMinLength { get; set; }
         public static bool PasswordIsRestricted { get; set; }
+        public static int PasswordValidityPeriod { get; set; }
+        public static DateTime? PasswordExpiredAt { get; set; }
     }
 }

@@ -17,8 +17,10 @@ namespace authNetFramework.Models
 
         public string IsBlocked { get; set; }
 
-        public string PasswordValidityPeriod { get; set; }
-
         public string PasswordMinLength { get; set; }
+
+        public int PasswordValidityPeriod { get; set; }
+
+        public DateTime? PasswordExpiredAt { get; set; }
     }
 }

@@ -27,15 +27,24 @@ namespace authNetFramework
             {
                 if(UsersControl.Users.FirstOrDefault(x => x.Name == textBoxName.Text) == null)
                 {
-                    UsersControl.Users.Add(new User
+                    int newUserPassValidityPeriod = Convert.ToInt32(textBoxPasswordValidityPeriod.Text);
+
+                    var newUser = new User
                     {
                         Name = textBoxName.Text,
                         Password = string.Empty,
                         PasswordMinLength = textBoxPasswordMinLength.Text,
-                        PasswordValidityPeriod = textBoxPasswordValidityPeriod.Text,
+                        PasswordValidityPeriod = newUserPassValidityPeriod,
                         PasswordIsRestricted = checkBox.Checked ? "true" : "false",
                         IsBlocked = "false"
-                    });
+                    };
+
+                    if(newUserPassValidityPeriod != 0)
+                    {
+                        newUser.PasswordExpiredAt = DateTime.Now.AddMonths(newUserPassValidityPeriod);
+                    }
+
+                    UsersControl.Users.Add(newUser);
 
                     UsersControl.Save();
 

@@ -35,7 +35,7 @@ namespace authNetFramework
                         Name = elem.Name,
                         PasswordIsRestricted = elem.PasswordIsRestricted,
                         IsBlocked = elem.IsBlocked,
-                        PasswordValidityPeriod = elem.PasswordValidityPeriod,
+                        PasswordExpiredAt = Convert.ToString(elem.PasswordExpiredAt),
                         PasswordMinLength = elem.PasswordMinLength
                     });
                 }

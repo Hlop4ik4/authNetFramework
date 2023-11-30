@@ -18,7 +18,7 @@ namespace authNetFramework.Constant
 
             foreach(var user in Users)
             {
-                sb.AppendLine($"12345678name:{user.Name};password:{user.Password};passwordminlength:{user.PasswordMinLength};passwordvalidityperiod:{user.PasswordValidityPeriod};passwordisrestricted:{user.PasswordIsRestricted};isblocked:{user.IsBlocked}");
+                sb.AppendLine($"12345678name|{user.Name};password|{user.Password};passwordminlength|{user.PasswordMinLength};passwordexpiredat|{user.PasswordExpiredAt};passwordvalidityperiod|{user.PasswordValidityPeriod};passwordisrestricted|{user.PasswordIsRestricted};isblocked|{user.IsBlocked}");
             }
 
             DESEncryptor.EncryptFile(sb.ToString());
@@ -34,7 +34,7 @@ namespace authNetFramework.Constant
                 User user = new User();
                 foreach (var item in subStr.Split(';'))
                 {
-                    string[] optionValue = item.Split(':');
+                    string[] optionValue = item.Split('|');
 
                     switch (optionValue[0])
                     {
@@ -47,14 +47,18 @@ namespace authNetFramework.Constant
                         case "passwordminlength":
                             user.PasswordMinLength = optionValue[1];
                             break;
-                        case "passwordvalidityperiod":
-                            user.PasswordValidityPeriod = optionValue[1];
+                        case "passwordexpiredat":
+                            if (!string.IsNullOrEmpty(optionValue[1]))
+                                user.PasswordExpiredAt = DateTime.Parse(optionValue[1]);
                             break;
                         case "passwordisrestricted":
                             user.PasswordIsRestricted = optionValue[1];
                             break;
                         case "isblocked":
                             user.IsBlocked = optionValue[1];
+                            break;
+                        case "passwordvalidityperiod":
+                            user.PasswordValidityPeriod = Convert.ToInt32(optionValue[1]);
                             break;
                         default:
                             if (optionValue[0].Contains("name"))

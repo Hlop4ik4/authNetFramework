@@ -42,18 +42,21 @@ namespace authNetFramework.Models
             }
         }
 
-        private string passwordValidityPeriod;
+        private DateTime? passwordExpiredAt;
 
-        [DisplayName("Срок действия пароля")]
-        public string PasswordValidityPeriod
+        [DisplayName("Дата окончания действия пароля")]
+        public string PasswordExpiredAt
         {
             get
             {
-                return passwordValidityPeriod == "0" ? "Нет" : passwordValidityPeriod;
+                return passwordExpiredAt == null ? "Никогда" : Convert.ToString(passwordExpiredAt);
             }
             set 
             {
-                passwordValidityPeriod = value;
+                if (string.IsNullOrEmpty(value))
+                    passwordExpiredAt = null;
+                else
+                    passwordExpiredAt = DateTime.Parse(value);
             }
         }
 

@@ -32,7 +32,7 @@ namespace authNetFramework
         {
             if (!File.Exists(Options.FilePath))
             {
-                string initString = "12345678name:ADMIN;password:;passwordminlength:0;passwordvalidityperiod:0;passwordisrestricted:false;isblocked:false;";
+                string initString = "12345678name|ADMIN;password|;passwordminlength|0;passwordexpiredat|;passwordvalidityperiod|0;passwordisrestricted|false;isblocked|false;";
 
                 DESEncryptor.EncryptFile(initString);
 
